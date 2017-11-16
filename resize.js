@@ -8,7 +8,10 @@ function resize(imgUrl, height, cb) {
 
     const srcHeight = source.height;
     const srcWidth = source.width;
+    height = height || srcHeight;
+
     const targetWidth = srcWidth / srcHeight * height;
+
     const canvas = createCanvas(targetWidth, parseInt(height, 10));
     const ctx = canvas.getContext("2d");
     ctx.drawImage(source, 0, 0, targetWidth, height);
