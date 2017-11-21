@@ -19,25 +19,38 @@ function resize(imgUrl, width, height, keepRatio, cb) {
       let targetWidth, targetHeight;
 
       if (width && height && keepRatio) {
-        if (srcWidth > srcHeight) {
-          height = 0;
-        } else {
-          width = 0;
-        }
-      }
+        let wRatio = 1,
+          hRatio = 0;
 
-      if (!width && !height) {
-        targetWidth = srcWidth;
-        targetHeight = srcHeight;
-      } else if (!width) {
-        targetWidth = srcWidth / srcHeight * height;
-        targetHeight = parseInt(height, 10);
-      } else if (!height) {
-        targetHeight = srcHeight / srcWidth * width;
-        targetWidth = parseInt(width, 10);
+        if (srcWidth > srcHeight) {
+          if (!(srcWidth <= width && srcHeight <= height)) {
+            hRatio = height / srcHeight;
+            wRatio = width / srcWidth;
+          }
+        } else {
+          if (!(srcHeight <= width && srcWidth <= height)) {
+            wRatio = height / srcHeight;
+            hRatio = width / srcWidth;
+          }
+        }
+
+        let ratio = Math.min(wRatio, hRatio);
+        targetWidth = srcWidth * ratio;
+        targetHeight = srcHeight * ratio;
       } else {
-        targetWidth = parseInt(width, 10);
-        targetHeight = parseInt(height, 10);
+        if (!width && !height) {
+          targetWidth = srcWidth;
+          targetHeight = srcHeight;
+        } else if (!width) {
+          targetWidth = srcWidth / srcHeight * height;
+          targetHeight = parseInt(height, 10);
+        } else if (!height) {
+          targetHeight = srcHeight / srcWidth * width;
+          targetWidth = parseInt(width, 10);
+        } else {
+          targetWidth = parseInt(width, 10);
+          targetHeight = parseInt(height, 10);
+        }
       }
 
       const canvas = createCanvas(targetWidth, targetHeight);
