@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const LISTEN_PORT = process.env.IMGRESIZE_PORT || 3333;
 
+app.use(require('express-status-monitor')());
+
 const resize = require('./resize');
 
 app.get('/', (req, res) => {
