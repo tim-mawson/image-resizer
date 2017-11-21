@@ -1,7 +1,7 @@
 const { createCanvas, Image } = require('canvas');
 const request = require('request');
 
-function resize(imgUrl, height, cb) {
+function resize(imgUrl, width, height, keepRatio, cb) {
   request(imgUrl, { encoding: null }, (err, res) => {
     if (err) {
       throw new Error(err);
@@ -16,17 +16,34 @@ function resize(imgUrl, height, cb) {
     source.onload = () => {
       const srcHeight = source.height;
       const srcWidth = source.width;
-      height = height || srcHeight;
+      let targetWidth, targetHeight;
 
-      const targetWidth = srcWidth / srcHeight * height;
+      if (width && height && keepRatio) {
+        if (width > height) {
+          height = 0;
+        } else {
+          width = 0;
+        }
+      }
 
-      const canvas = createCanvas(targetWidth, parseInt(height, 10));
+      if (!width) {
+        targetWidth = srcWidth / srcHeight * height;
+        targetHeight = parseInt(height, 10);
+      } else if (!height) {
+        targetHeight = srcHeight / srcWidth * width;
+        targetWidth = parseInt(width, 10);
+      } else {
+        targetWidth = parseInt(width, 10);
+        targetHeight = parseInt(height, 10);
+      }
+
+      const canvas = createCanvas(targetWidth, targetHeight);
       const ctx = canvas.getContext('2d');
       ctx.patternQuality = 'bilinear';
       ctx.filter = 'bilinear';
       ctx.antialias = 'subpixel';
       ctx.imageSmoothingEnabled = true;
-      ctx.drawImage(source, 0, 0, targetWidth, height);
+      ctx.drawImage(source, 0, 0, targetWidth, targetHeight);
 
       const out = canvas.toBuffer((err, buf) => {
         if (err) {
