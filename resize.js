@@ -19,7 +19,7 @@ function resize(imgUrl, width, height, keepRatio, cb) {
       let targetWidth, targetHeight;
 
       if (width && height && keepRatio) {
-        if (width > height) {
+        if (srcWidth > srcHeight) {
           height = 0;
         } else {
           width = 0;
