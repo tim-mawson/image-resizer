@@ -26,7 +26,10 @@ function resize(imgUrl, width, height, keepRatio, cb) {
         }
       }
 
-      if (!width) {
+      if (!width && !height) {
+        targetWidth = srcWidth;
+        targetHeight = srcHeight;
+      } else if (!width) {
         targetWidth = srcWidth / srcHeight * height;
         targetHeight = parseInt(height, 10);
       } else if (!height) {
