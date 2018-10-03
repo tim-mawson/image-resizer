@@ -6,10 +6,10 @@ app.use(require('express-status-monitor')());
 
 const resize = require('./resize');
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
   res.setHeader('Content-Type', 'image/png');
   resize(
-    req.query.url,
+    req.path.replace(/\$/g, '.'),
     req.query.width,
     req.query.height,
     req.query.keepRatio,

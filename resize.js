@@ -2,7 +2,7 @@ const { createCanvas, Image } = require('canvas');
 const request = require('request');
 
 function resize(imgUrl, width, height, keepRatio, cb) {
-  request(imgUrl, { encoding: null }, (err, res) => {
+  request('https:/' + imgUrl, { encoding: null }, (err, res) => {
     if (err) {
       throw new Error(err);
     }
@@ -42,10 +42,10 @@ function resize(imgUrl, width, height, keepRatio, cb) {
           targetWidth = srcWidth;
           targetHeight = srcHeight;
         } else if (!width) {
-          targetWidth = srcWidth / srcHeight * height;
+          targetWidth = (srcWidth / srcHeight) * height;
           targetHeight = parseInt(height, 10);
         } else if (!height) {
-          targetHeight = srcHeight / srcWidth * width;
+          targetHeight = (srcHeight / srcWidth) * width;
           targetWidth = parseInt(width, 10);
         } else {
           targetWidth = parseInt(width, 10);
