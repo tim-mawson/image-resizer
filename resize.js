@@ -2,7 +2,7 @@ const { createCanvas, Image } = require('canvas');
 const request = require('request');
 
 function resize(imgUrl, width, height, keepRatio, cb) {
-  request('https:/' + imgUrl, { encoding: null }, (err, res) => {
+  request(imgUrl, { encoding: null }, (err, res) => {
     if (err) {
       throw new Error(err);
     }

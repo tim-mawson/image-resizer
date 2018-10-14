@@ -8,8 +8,10 @@ const resize = require('./resize');
 
 app.get('*', (req, res) => {
   res.setHeader('Content-Type', 'image/png');
+  const imageUrl = Buffer.from(req.path.slice(1), 'base64').toString('utf8');
+
   resize(
-    req.path.replace(/\$/g, '.'),
+    imageUrl,
     req.query.width,
     req.query.height,
     req.query.keepRatio,
