@@ -9,9 +9,8 @@
   "author": "Tim Mawson",
   "license": "ISC",
   "dependencies": {
-    "canvas": "^2.0.0-alpha.6",
+    "canvas": "^2.6.1",
     "express": "^4.16.2",
-    "express-status-monitor": "^1.0.1",
     "request": "^2.83.0"
   },
   "prettier": {
