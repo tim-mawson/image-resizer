@@ -1,16 +1,15 @@
-const { createCanvas, Image } = require('canvas');
-const request = require('request');
+import { createCanvas, Image } from 'canvas';
+import fetch from 'node-fetch';
 
-function resize(imgUrl, width, height, keepRatio, cb) {
-  request(imgUrl, { encoding: null }, (err, res) => {
-    if (err) {
-      throw new Error(err);
-    }
+async function resize(imgUrl, width, height, keepRatio) {
+  const response = await fetch(imgUrl);
+  const res = await response.buffer();
 
+  return new Promise((resolve, reject) => {
     const source = new Image();
 
     source.onerror = err => {
-      throw new Error(err);
+      reject(err);
     };
 
     source.onload = () => {
@@ -63,15 +62,15 @@ function resize(imgUrl, width, height, keepRatio, cb) {
 
       const out = canvas.toBuffer((err, buf) => {
         if (err) {
-          throw err;
+          reject(err);
         }
 
-        cb(buf);
+        resolve(out);
       });
-    };
 
-    source.src = res.body;
+      source.src = res;
+    }
   });
 }
 
-module.exports = resize;
+export default resize;
